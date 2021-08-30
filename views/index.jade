@@ -9,8 +9,8 @@ block content
        =post.title
      p.meta Posted in 
       a(href='/details/show/#{post.category}') #{post.category} 
-      `by #{post.author}
-      `on #{moment(post.date).format("MM-DD-YYYY")}
+      `by #{post.author} 
+      `on #{moment(post.date).format("MM-DD-YYYY")} 
      img(src='/images/#{post.mainimage}')
      !=truncateText(post.body,400)
      a.more(href='/posts/show/#{post._id}') Read More

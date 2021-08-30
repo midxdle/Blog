@@ -1,24 +1,24 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var session = require('express-session');
-var multer = require('multer');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
+const multer = require('multer');
 const upload = multer({ dest: 'uploads/' })
-var expressValidator = require('express-validator');
-var mongo = require('mongodb');
-var db = require('monk')("mongodb+srv://midxdle:fFbE2DpWoxmGTAXF@cluster0.axsj3.mongodb.net/nodeblog?retryWrites=true&w=majority");
-var indexRouter = require('./routes/index');
-var postsRouter = require('./routes/posts');
-var detailsRouter = require('./routes/details');
+const expressValidator = require('express-validator');
+const mongo = require('mongodb');
+const db = require('monk')("mongodb+srv://midxdle:fFbE2DpWoxmGTAXF@cluster0.axsj3.mongodb.net/nodeblog?retryWrites=true&w=majority");
+const indexRouter = require('./routes/index');
+const postsRouter = require('./routes/posts');
+const detailsRouter = require('./routes/details');
 
-var app = express();
+const app = express();
 
 app.locals.moment = require('moment');
 
 app.locals.truncateText = function(text, length) {
-  var truncatedText = text.substring(0, length);
+  let truncatedText = text.substring(0, length);
   return truncatedText;
 }
 
@@ -42,7 +42,7 @@ app.use(session({
 // Express Validator
 app.use(expressValidator({
   errorFormatter: function(param , msg, value) {
-    var namesapce = param.split('.')
+    let namesapce = param.split('.')
     , root = namesapce.shift()
     , formParam = root;
 
