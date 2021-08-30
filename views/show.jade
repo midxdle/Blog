@@ -8,7 +8,7 @@ block content
       by #{post.author} 
       on #{moment(post.date).format("MM-DD-YYYY")}
      img(src='/images/#{post.mainimage}')
-     !=post.body
+     !=truncateText(post.body,400)
      br
      hr
      if post.comments
