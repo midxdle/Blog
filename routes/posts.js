@@ -1,12 +1,12 @@
-var express = require('express');
-var router = express.Router();
-var multer = require('multer');
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
 const upload = multer({ dest: './public/images' })
-var mongo = require('mongodb');
-var db = require('monk')("mongodb+srv://midxdle:fFbE2DpWoxmGTAXF@cluster0.axsj3.mongodb.net/nodeblog?retryWrites=true&w=majority");
+const mongo = require('mongodb');
+const db = require('monk')("mongodb+srv://midxdle:fFbE2DpWoxmGTAXF@cluster0.axsj3.mongodb.net/nodeblog?retryWrites=true&w=majority");
 
 router.get('/show/:id', function(req, res, next) {
-  var posts = db.get('posts');
+  let posts = db.get('posts');
   posts.findOne({ _id: req.params.id }, function(err, post) {
     res.render('show', {
       'post': post
@@ -16,30 +16,29 @@ router.get('/show/:id', function(req, res, next) {
 
 router.get('/add', function(req, res, next) {
 
-  var details = db.get('categories');
+  let details = db.get('categories');
 
-  details.find({}, {}, function(err, categories, authors) {
+  details.find({}, {}, function(err, categories) {
     res.render('addpost', {
       'title':'Add Post',
-      'categories': categories,
-      'authors':authors
+      'categories': categories
     });
   });
 })
 
 router.post('/add', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
-  var title = req.body.title;
-  var category = req.body.category;
-  var body = req.body.body;
-  var author = req.body.author;
-  var date = new Date();
+  let title = req.body.title;
+  let category = req.body.category;
+  let body = req.body.body;
+  let author = req.body.author;
+  let date = new Date();
 
   // Check Image Upload
   if(req.file) {
     var mainimage = req.file.filename;
   } else {
-    var mainmage = 'noimage.jpg';
+    var mainimage = 'noimage.jpg';
   }
 
   // Form Validation
@@ -47,7 +46,7 @@ router.post('/add', upload.single('mainimage'), function(req, res, next) {
   req.checkBody('body', 'Body field is required').notEmpty();
 
   // Check Errors
-  var errors = req.validationErrors();
+  let errors = req.validationErrors();
 
   if(errors) {
     req.flash('error', 'Fields required');
@@ -57,7 +56,7 @@ router.post('/add', upload.single('mainimage'), function(req, res, next) {
     //   "errors": errors
     // });
   } else {
-    var posts = db.get('posts');
+    let posts = db.get('posts');
     posts.insert({
       "title": title,
       "body": body,
@@ -79,11 +78,11 @@ router.post('/add', upload.single('mainimage'), function(req, res, next) {
 
 router.post('/addcomment', function(req, res, next) {
   // Get Form Values
-  var name = req.body.name;
-  var email = req.body.email;
-  var body = req.body.body;
-  var postid = req.body.postid;
-  var commentdate = new Date();
+  let name = req.body.name;
+  let email = req.body.email;
+  let body = req.body.body;
+  let postid = req.body.postid;
+  let commentdate = new Date();
 
   // Form Validation
   req.checkBody('name', 'Name field is required').notEmpty();
@@ -92,10 +91,10 @@ router.post('/addcomment', function(req, res, next) {
   req.checkBody('body', 'Body field is required').notEmpty();
 
   // Check Errors
-  var errors = req.validationErrors();
+  let errors = req.validationErrors();
 
   if(errors) {
-    var posts = db.get('posts');
+    let posts = db.get('posts');
     posts.findOne({ _id: postid }, function(err, post) {
       res.render('show', {
         'post': post,
@@ -103,14 +102,14 @@ router.post('/addcomment', function(req, res, next) {
       });
     });
   } else {
-    var comment = {
+    let comment = {
       "name": name,
       "email": email,
       "body": body,
       "commentdate": commentdate
     }
 
-    var posts = db.get('posts');
+    let posts = db.get('posts');
 
     posts.update({
       "_id": postid

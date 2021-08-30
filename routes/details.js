@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var mongo = require('mongodb');
-var db = require('monk')("mongodb+srv://midxdle:fFbE2DpWoxmGTAXF@cluster0.axsj3.mongodb.net/nodeblog?retryWrites=true&w=majority");
+const express = require('express');
+const router = express.Router();
+const mongo = require('mongodb');
+const db = require('monk')("mongodb+srv://midxdle:fFbE2DpWoxmGTAXF@cluster0.axsj3.mongodb.net/nodeblog?retryWrites=true&w=majority");
 
 router.get('/show/:category', function(req, res, next) {
-  var posts = db.get('posts');
+  let posts = db.get('posts');
 
   posts.find({category: req.params.category}, {}, function(err, posts) {
     res.render('index', {
@@ -23,15 +23,15 @@ router.get('/add', function(req, res, next) {
 
 router.post('/add', function(req, res, next) {
   // Get Form Values
-  var category = req.body.category;
-  var author = req.body.author;
+  let category = req.body.category;
+  let author = req.body.author;
 
   // Form Validation
   req.checkBody('category', 'Category field is required').notEmpty();
   req.checkBody('author', 'Author field is required').notEmpty();
 
   // Check Errors
-  var errors = req.validationErrors();
+  let errors = req.validationErrors();
 
   if(errors) {
     req.flash('error', 'Fields required');
@@ -41,7 +41,7 @@ router.post('/add', function(req, res, next) {
     //   "errors": errors
     // });
   } else {
-    var categories = db.get('categories');
+    let categories = db.get('categories');
     categories.insert({
       "category": category,
       "author": author
