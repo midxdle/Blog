@@ -16,15 +16,16 @@ router.get('/show/:id', function(req, res, next) {
 
 router.get('/add', function(req, res, next) {
 
-  var categories = db.get('categories');
+  var details = db.get('categories');
 
-  categories.find({}, {}, function(err, categories) {
+  details.find({}, {}, function(err, categories, authors) {
     res.render('addpost', {
       'title':'Add Post',
-      'categories': categories
+      'categories': categories,
+      'authors':authors
     });
   });
-});
+})
 
 router.post('/add', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
@@ -49,9 +50,12 @@ router.post('/add', upload.single('mainimage'), function(req, res, next) {
   var errors = req.validationErrors();
 
   if(errors) {
-    res.render('addpost', {
-      "errors": errors
-    });
+    req.flash('error', 'Fields required');
+    res.location('/posts/add');
+    res.redirect('/posts/add');
+    // res.render('addpost', {
+    //   "errors": errors
+    // });
   } else {
     var posts = db.get('posts');
     posts.insert({
@@ -65,7 +69,7 @@ router.post('/add', upload.single('mainimage'), function(req, res, next) {
       if(err) {
         res.send(err);
       } else {
-        req.flash('sucess', 'Post Added');
+        req.flash('success', 'Post Added');
         res.location('/');
         res.redirect('/');
       }
