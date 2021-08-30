@@ -6,8 +6,11 @@ block content
 		if errors
 			each error, i in errors
 				li.alert.alert-danger #{error.msg}
-	form(method='post', action='/categories/add')
+	form(method='post', action='/details/add')
 		.form-group
-			label Name:
-			input.form-control(name='name', type='text')
+			label Add Category:
+			input.form-control(name='category', type='text')
+			br
+			label Add Author:
+			input.form-control(name='author', type='text')
 		input.btn.btn-default(name='submit',type='submit',value='Save')
